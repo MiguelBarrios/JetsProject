@@ -65,6 +65,24 @@ public class AirField {
 		}
 	}
 	
+	public void loadAllCargoJets() {
+		System.out.println("Loading all cargo jets");
+		for(Jet jet : jets) {
+			if(jet instanceof CargoJet) {
+				((CargoJet) jet).loadCargo();
+			}
+		}
+	}
+	
+	public void reloadAllMilitaryJets() {
+		System.out.println("Reloading all Fighter jets");
+		for(Jet jet : jets) {
+			if(jet instanceof FighterJet) {
+				((FighterJet) jet).reloadWepons();
+			}
+		}
+	}
+	
 	// read in list of jets from file
 	private List<Jet> loadJetData(String filename){
 		

@@ -20,19 +20,6 @@ public class FighterJet extends Jet implements Wepons {
 
 	@Override
 	public void reloadWepons() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Reloading wepons for jet: " + this.toString());
 	}
-
-	@Override
-	public void fireWepons() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-	
-	
-	
-
 }

@@ -20,6 +20,10 @@ public class CargoJet extends Jet implements Cargo{
 	@Override
 	public void loadCargo() {
 		// TODO Auto-generated method stub
+		System.out.println("Now loading Cargo for jet: " + this.toString());
+		System.out.println("Estimated time to completion: 0.0002 microseconds");
+		System.out.println("Cargo has been loaded");
+	
 		
 	}
 
