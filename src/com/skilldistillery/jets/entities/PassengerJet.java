@@ -9,7 +9,7 @@ public class PassengerJet extends Jet{
 
 	@Override
 	void fly() {
-		// TODO Auto-generated method stub
+		System.out.println("Swoosh, ladies and gentalmen if you look to your right you will the some land");
 		
 	}
 

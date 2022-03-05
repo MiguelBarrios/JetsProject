@@ -1,6 +1,6 @@
 package com.skilldistillery.jets.entities;
 
-public class CargoJet extends Jet{
+public class CargoJet extends Jet implements Cargo{
 
 	public CargoJet(String model, double speed, int range, double price) {
 		super(model, speed, range, price);
@@ -8,14 +8,19 @@ public class CargoJet extends Jet{
 	}
 
 	@Override
-	void fly() {
-		// TODO Auto-generated method stub
-		
+	public void fly() {
+		System.out.println("whoosh!!! gota get this cargo to its destination");
 	}
 
 	@Override
 	public String toString() {
 		return "CargoJet [" + super.toString() + "]";
+	}
+
+	@Override
+	public void loadCargo() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

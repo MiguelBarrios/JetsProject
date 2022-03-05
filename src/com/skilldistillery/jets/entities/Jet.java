@@ -9,6 +9,8 @@ public abstract class Jet {
 	
 	private double price;
 	
+	abstract void fly();
+	
 	public Jet(String model, double speed, int range, double price) {
 		super();
 		this.model = model;
@@ -17,7 +19,37 @@ public abstract class Jet {
 		this.price = price;
 	}
 
-	abstract void fly();
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public int getRange() {
+		return range;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
 	@Override
 	public String toString() {
