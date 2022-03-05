@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class AirField {
 	private List<Jet> jets;
@@ -83,6 +83,8 @@ public class AirField {
 		}
 	}
 	
+
+	
 	// read in list of jets from file
 	private List<Jet> loadJetData(String filename){
 		
@@ -111,7 +113,12 @@ public class AirField {
 		
 	}
 	
-	private Jet createJet(String type, String model, double speed, int range, double price) {
+	public void addJetToFleet(String type, String model, double speed, int range, double price) {
+		Jet jet = createJet(type ,model , speed, range, price);
+		jets.add(jet);
+	}
+	
+	public Jet createJet(String type, String model, double speed, int range, double price) {
 		
 		Jet jet = null;
 		if(type.equals("Passenger Jet")) {
