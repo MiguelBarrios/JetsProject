@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class AirField {
 	private List<Jet> jets;
@@ -14,12 +13,24 @@ public class AirField {
 		this.jets = loadJetData("jets.txt");
 	}
 	
+	public Jet[] getJets() {
+		
+		Jet[] res = new Jet[this.jets.size()];
+		for(int i = 0; i < res.length; ++i) {
+			res[i] = createCopy(jets.get(i));
+		}
+		
+		return res;
+	}
+	
+	
 	public void listFleet() {
-		System.out.println("Fleet info: number of jets " + jets.size());
+		System.out.println("--- Fleet info: number of jets ---");
 		for(Jet jet : jets) {
 			System.out.println(jet);
 		}
 	}
+	
 	
 	public void flyAllJets() {
 		for(Jet jet : this.jets) {
@@ -50,7 +61,7 @@ public class AirField {
 		int longestRange = 0;
 		Jet longestRangeJet = null;
 		for(Jet jet : this.jets) {
-			if(jet.getSpeed() > longestRange) {
+			if(jet.getRange() > longestRange) {
 				longestRange = jet.getRange();
 				longestRangeJet = jet;
 			}
@@ -83,8 +94,6 @@ public class AirField {
 		}
 	}
 	
-
-	
 	// read in list of jets from file
 	private List<Jet> loadJetData(String filename){
 		
@@ -103,14 +112,12 @@ public class AirField {
 				if(jet != null) {
 					jets.add(jet);
 				}
-				
 			}
 		}catch(IOException e) {
 			System.err.println("Error reading data");
 		}
 		
 		return jets;
-		
 	}
 	
 	public void addJetToFleet(String type, String model, double speed, int range, double price) {
@@ -121,23 +128,44 @@ public class AirField {
 	public Jet createJet(String type, String model, double speed, int range, double price) {
 		
 		Jet jet = null;
-		if(type.equals("Passenger Jet")) {
+		if(type.equals("PassengerJet")) {
 			jet = new PassengerJet(model, speed, range, price);
 		}
-		else if(type.equals("Cargo Plane")) {
+		else if(type.equals("CargoJet")) {
 			jet = new CargoJet(model, speed, range, price);
 		}
-		else if(type.equals("Fighter Jet")) {
+		else if(type.equals("FighterJet")) {
 			jet = new FighterJet(model, speed, range, price);
 		}
 		else if(type.equals("UFO")) {
 			jet = new UFO(model, speed, range, price);
 		}
 		else {
-			System.err.println("Error: invalid data");
+			System.err.println("Error: invalid data. Type " + type + " " + "model: " + model);
 		}
 		
 		return jet;
+	}
+	
+	public boolean removeJetById(int id) {
+		for(int i = 0; i < jets.size(); ++i) {
+			if(jets.get(i).getId() == id) {
+				jets.remove(i);
+				return true; 
+			}
+		}
+		
+		return false;
+	}
+	
+	public Jet createCopy(Jet jet) {
+		String[] classPath = jet.getClass().getName().split("\\.");
+		String jetType = classPath[classPath.length - 1];
+		Jet copyOfJet = createJet(jetType, jet.getModel(), jet.getSpeed(), jet.getRange(), jet.getPrice());
+		copyOfJet.setId(jet.getId());
+		Jet.lastIssuedId = Jet.lastIssuedId - 1;
+		return copyOfJet;
+		
 	}
 
 }

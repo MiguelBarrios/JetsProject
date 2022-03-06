@@ -1,6 +1,9 @@
 package com.skilldistillery.jets.entities;
 
 public abstract class Jet {
+	
+	protected static int lastIssuedId = 0;
+	
 	private String model;
 	
 	private double speed;
@@ -8,6 +11,8 @@ public abstract class Jet {
 	private int range;
 	
 	private double price;
+	
+	private int id;
 	
 	abstract void fly();
 	
@@ -17,6 +22,8 @@ public abstract class Jet {
 		this.speed = speed;
 		this.range = range;
 		this.price = price;
+		this.id = lastIssuedId + 1;
+		lastIssuedId = lastIssuedId + 1;
 	}
 
 	public String getModel() {
@@ -50,10 +57,18 @@ public abstract class Jet {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {
-		return "model=" + model + ", speed=" + speed + ", range=" + range + ", price=" + price;
+		return "model=" + model + ", id=" + id + ", speed=" + speed + ", range=" + range + ", price=" + price;
 	}
 	
 	

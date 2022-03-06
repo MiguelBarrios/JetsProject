@@ -2,33 +2,35 @@ package com.skilldistillery.jets.app;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
-
 import com.skilldistillery.jets.entities.AirField;
 import com.skilldistillery.jets.entities.Jet;
+import com.skilldistillery.jets.entities.UFO;
 
 public class JetsApplication {
 
+	private final String[] typesOfJets = new String[] { "Cargo Jet", "Fighter Jet", "Passenger Jet", "UFO" };
+	
 	private AirField airfield;
 
 	private Scanner scanner;
 
+	public static void main(String[] args) throws InterruptedException, IOException {
+
+		
+		
+		JetsApplication app = new JetsApplication();
+
+		app.run();
+	}
+	
 	public JetsApplication() {
 		airfield = new AirField();
 		scanner = new Scanner(System.in);
 	}
 
-	public static void main(String[] args) throws InterruptedException, IOException {
-		JetsApplication app = new JetsApplication();
-
-		app.run();
-
-	}
-
-	
 	public void run() {
-		// A String var is used to casting and associated exceptions
+
 		String userInput = "";
 
 		do {
@@ -47,7 +49,7 @@ public class JetsApplication {
 				airfield.viewFastedJet();
 				break;
 			case "4":
-				airfield.viewFastedJet();
+				airfield.viewJetWithLongestRange();
 				break;
 			case "5":
 				airfield.loadAllCargoJets();
@@ -59,72 +61,93 @@ public class JetsApplication {
 				addNewJet();
 				break;
 			case "8":
+				removeJet();
 				break;
 			case "9":
 				break;
 			default:
-				System.out.println("Ivalid option, please try again");
+				System.out.print("Ivalid option: ");
 				break;
 			}
-			System.out.println("\nPress enter to continue");
+			System.out.print("\nPress ENTER to continue ");
 			scanner.nextLine();
-			
+			System.out.println();
 
-		} while (!userInput.equalsIgnoreCase("9"));
-
-		displayMenu();
+		} while (!userInput.equals("9"));
 
 		scanner.close();
 	}
 
 	public void displayMenu() {
-		System.out.println("Menu");
-		System.out.println("1)List fleet\n" + "2)Fly all jets\n" + "3)View fastest jet\n"
+		System.out.println("--- Main Menu ---");
+		System.out.print("1)List fleet\n" + "2)Fly all jets\n" + "3)View fastest jet\n"
 				+ "4)View jet with longest range\n" + "5)Load all Cargo Jets\n" + "6)Reload jets with wepons!\n"
-				+ "7)Add a jet to Fleet\n" + "8)Remove a jet from Fleet\n" + "9)Quit");
-		System.out.print("Select option: ");
+				+ "7)Add a jet to Fleet\n" + "8)Remove a jet from Fleet\n" + "9)Quit\n\nSelect option: ");
+	}
+	
+	public String getSelectionFromUser() {
+		System.out.print("Selection: ");
+		return scanner.nextLine();
 	}
 
+	public void removeJet() {
+		Jet[] jets = airfield.getJets();
+		System.out.println("--- Select Jet to remove ---");
+		for(int i = 0; i < jets.length; ++i) {
+			System.out.printf("%d) %s\n", i + 1, jets[i].toString());
+		}
+		String selection = getSelectionFromUser();
+		
+		Jet jetToRemove = jets[Integer.parseInt(selection) - 1];
+		System.out.println("Jet to remove");
+		System.out.println(jetToRemove);
+		boolean removed = airfield.removeJetById(jetToRemove.getId());
+		if(removed) {
+			System.out.println("Jet succesfully removed");
+		}
+		else {
+			System.out.println("Jet was unable to be removed");
+		}
+	}
+	
 	public void addNewJet() {
 		System.out.println("## Adding Jet to fleet ##");
-		String[] typesOfJets = new String[] { "Cargo Jet", "Fighter Jet", "Passenger Jet", "UFO" };
-		menuPrint("Select type of jet", typesOfJets);
-		System.out.println("selection: ");
-		String selection = scanner.nextLine();
-		System.out.println(selection);
-		System.out.println("Enter jet information in the following format");
-		System.out.println("model,speed,range,price");
-		String data = scanner.nextLine();
-		String[] jetInfo = data.split(",");
-		String model = jetInfo[0];
-		double speed = Double.parseDouble(jetInfo[1]);
-		int range = Integer.parseInt(jetInfo[2]);
-		double price = Double.parseDouble(jetInfo[3]);
-		
-		
+		selectionPrint(typesOfJets);
+
+		String selection = getSelectionFromUser();
+
 		String type = null;
 		switch (selection) {
-			case "1": type = "Cargo Plane";
+			case "1":
+				type = "CargoJet";
 				break;
-			case "2": type = "Fighter Jet";
+			case "2":
+				type = "FighterJet";
 				break;
-			case "3": type = "Passenger Jet"; 
+			case "3":
+				type = "PassengerJet";
 				break;
-			case "4": type = "UFO";
+			case "4":
+				type = "UFO";
 				break;
 		}
-		
-		if(type != null) {
+
+		if (type != null) {
+			System.out.println("Enter jet info in the following format: model,speed,range,price");
+			String data = scanner.nextLine().trim();
+			String[] jetInfo = data.split(",");
+			String model = jetInfo[0];
+			double speed = Double.parseDouble(jetInfo[1]);
+			int range = Integer.parseInt(jetInfo[2]);
+			double price = Double.parseDouble(jetInfo[3]);
 			airfield.addJetToFleet(type, model, speed, range, price);
 		} else {
-			System.out.println("IO error");
+			System.out.println("Invalid option");
 		}
-		
 
 	}
 
-	public void menuPrint(String banner, String[] items) {
-		System.out.println(banner);
+	public void selectionPrint(String[] items) {
 		for (int i = 0; i < items.length; ++i) {
 			System.out.printf("%d)%s\n", i + 1, items[i]);
 		}
