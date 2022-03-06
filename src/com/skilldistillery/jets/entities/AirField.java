@@ -25,7 +25,6 @@ public class AirField {
 	
 	
 	public void listFleet() {
-		System.out.println("--- Fleet info: number of jets ---");
 		for(Jet jet : jets) {
 			System.out.println(jet);
 		}
@@ -52,8 +51,7 @@ public class AirField {
 			System.out.println("There can't be a fastest jet if there are no jets");
 		}
 		else {
-			System.out.println("Fastest Jet");
-			System.out.println(fastestJet);
+			System.out.println("Fastest Jet\n" + fastestJet);
 		}
 	}
 	
@@ -165,7 +163,6 @@ public class AirField {
 		copyOfJet.setId(jet.getId());
 		Jet.lastIssuedId = Jet.lastIssuedId - 1;
 		return copyOfJet;
-		
 	}
 
 }
