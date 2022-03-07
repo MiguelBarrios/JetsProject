@@ -7,29 +7,27 @@ import com.skilldistillery.jets.entities.Jet;
 
 public class JetsApplication {
 
-	private final String[] typesOfJets = new String[] { "Cargo Jet", "Fighter Jet", "Passenger Jet", "UFO" };
-	
+	private final String[] typesOfJets = new String[] { "Cargo Jet", "Fighter Jet", "JetImpl", "UFO" };
+
 	private AirField airfield;
 
 	private Scanner scanner;
 
-	public static void main(String[] args) throws InterruptedException, IOException {
+	public static void main(String[] args) {
 
 		JetsApplication app = new JetsApplication();
 		app.run();
-		
-		System.out.println("Goodbye");
 	}
-	
+
 	public JetsApplication() {
-		airfield = new AirField();
+		airfield = new AirField("jets.txt");
 		scanner = new Scanner(System.in);
 	}
 
 	public void run() {
 
 		String userInput = "";
-
+		
 		do {
 			displayMenu();
 			userInput = scanner.nextLine();
@@ -62,17 +60,21 @@ public class JetsApplication {
 				removeJet();
 				break;
 			case "9":
-				scanner.close();
-				return;
+				break;
 			default:
 				System.out.print("Ivalid option: ");
 				break;
 			}
-			System.out.print("\nPress ENTER to continue ");
-			scanner.nextLine();
+			
+			if(!userInput.equals("9")) {
+				System.out.print("\nPress ENTER to continue ");
+				scanner.nextLine();
+			}
+
 
 		} while (!userInput.equals("9"));
 
+		System.out.println("Goodbye");
 		scanner.close();
 	}
 
@@ -83,67 +85,71 @@ public class JetsApplication {
 				+ "7)Add a jet to Fleet\n" + "8)Remove a jet from Fleet\n" + "9)Quit\n\nSelect option: ");
 	}
 
-	public void removeJet() {
-		Jet[] jets = airfield.getJets();
-		System.out.println("--- Select Jet to remove ---");
-		for(int i = 0; i < jets.length; ++i) {
-			System.out.printf("%d) %s\n", i + 1, jets[i].toString());
-		}
-		String selection = getSelectionFromUser();
-		
-		Jet jetToRemove = jets[Integer.parseInt(selection) - 1];
-		System.out.println("Jet to remove");
-		System.out.println(jetToRemove);
-		boolean removed = airfield.removeJetById(jetToRemove.getId());
-		
-		String message = (removed) ? "Jet succesfully removed": "Jet was unable to be removed";
-		System.out.println(message);
-	}
-	
 	public void addNewJet() {
 		System.out.println("## Adding Jet to fleet ##");
+		// Show user the types of jets available to add
 		for (int i = 0; i < typesOfJets.length; ++i) {
 			System.out.printf("%d)%s\n", i + 1, typesOfJets[i]);
 		}
-
+		
+		String type = null;
 		String selection = getSelectionFromUser();
 
-		String type = null;
 		switch (selection) {
-			case "1":
-				type = "CargoJet";
-				break;
-			case "2":
-				type = "FighterJet";
-				break;
-			case "3":
-				type = "PassengerJet";
-				break;
-			case "4":
-				type = "UFO";
-				break;
+		case "1":
+			type = "CargoJet";
+			break;
+		case "2":
+			type = "FighterJet";
+			break;
+		case "3":
+			type = "JetImpl";
+			break;
+		case "4":
+			type = "UFO";
+			break;
+		default:
+			System.out.println("Invalid option");
+			return;
 		}
 
-		if (type != null) {
-			System.out.println("Enter jet info in the following format: model,speed,range,price");
-			String data = scanner.nextLine().trim();
-			String[] jetInfo = data.split(",");
+		System.out.println("Enter jet info in the following format: \"model,speed,range,price\"");
+		
+		try {
+			String[] jetInfo = scanner.nextLine().trim().split(",");
 			String model = jetInfo[0];
 			double speed = Double.parseDouble(jetInfo[1]);
 			int range = Integer.parseInt(jetInfo[2]);
 			double price = Double.parseDouble(jetInfo[3]);
 			airfield.addJetToFleet(type, model, speed, range, price);
-		} else {
-			System.out.println("Invalid option");
+		}catch(Exception e){
+			System.out.println("Input format Exception");
+			System.out.println("Jet not created");
 		}
 
+
 	}
-	
+
+	public void removeJet() {
+		Jet[] jets = airfield.getJets();
+		System.out.println("--- Select Jet to remove ---");
+		for (int i = 0; i < jets.length; ++i) {
+			System.out.printf("%d) %s\n", i + 1, jets[i].toString());
+		}
+		String selection = getSelectionFromUser();
+
+		Jet jetToRemove = jets[Integer.parseInt(selection) - 1];
+		System.out.println("Jet to remove");
+		System.out.println(jetToRemove);
+		boolean removed = airfield.removeJetById(jetToRemove.getId());
+
+		String message = (removed) ? "Jet succesfully removed" : "Jet was unable to be removed";
+		System.out.println(message);
+	}
+
 	public String getSelectionFromUser() {
 		System.out.print("Selection: ");
 		return scanner.nextLine();
 	}
-	
-	
 
 }

@@ -10,7 +10,11 @@ public class AirField {
 	private List<Jet> jets;
 	
 	public AirField() {
-		this.jets = loadJetData("jets.txt");
+		this("jets.txt");
+	}
+	
+	public AirField(String filename) {
+		this.jets = loadJetData(filename);
 	}
 	
 	public Jet[] getJets() {
@@ -23,15 +27,14 @@ public class AirField {
 		return res;
 	}
 	
-	
 	public void listFleet() {
 		for(Jet jet : jets) {
 			System.out.println(jet);
 		}
 	}
 	
-	
 	public void flyAllJets() {
+		System.out.println("Flying all jets");
 		for(Jet jet : this.jets) {
 			jet.fly();
 		}
@@ -66,11 +69,10 @@ public class AirField {
 		}
 		
 		if(longestRangeJet == null) {
-			System.out.println("There can't be a fastest jet if there are no jets");
+			System.out.println("There are currently no jets in the airfield");
 		}
 		else {
-			System.out.println("Jet with the longest Range");
-			System.out.println(longestRangeJet);
+			System.out.println("Jet with the longest Range: " + longestRangeJet);
 		}
 	}
 	
@@ -84,10 +86,10 @@ public class AirField {
 	}
 	
 	public void reloadAllMilitaryJets() {
-		System.out.println("Reloading all Fighter jets");
+		System.out.println("Reloading all Jets with wepons");
 		for(Jet jet : jets) {
-			if(jet instanceof FighterJet) {
-				((FighterJet) jet).reloadWepons();
+			if(jet instanceof Wepons) {
+				((Wepons) jet).reloadWepons();
 			}
 		}
 	}
@@ -126,8 +128,8 @@ public class AirField {
 	public Jet createJet(String type, String model, double speed, int range, double price) {
 		
 		Jet jet = null;
-		if(type.equals("PassengerJet")) {
-			jet = new PassengerJet(model, speed, range, price);
+		if(type.equals("JetImpl")) {
+			jet = new JetImpl(model, speed, range, price);
 		}
 		else if(type.equals("CargoJet")) {
 			jet = new CargoJet(model, speed, range, price);
@@ -152,7 +154,6 @@ public class AirField {
 				return true; 
 			}
 		}
-		
 		return false;
 	}
 	

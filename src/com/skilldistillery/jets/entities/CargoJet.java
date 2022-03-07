@@ -2,29 +2,29 @@ package com.skilldistillery.jets.entities;
 
 public class CargoJet extends Jet implements Cargo{
 
+	private double loadWeight;
+	
 	public CargoJet(String model, double speed, int range, double price) {
 		super(model, speed, range, price);
-		// TODO Auto-generated constructor stub
+		this.loadWeight = 0;
 	}
 
 	@Override
 	public void fly() {
-		System.out.println("whoosh!!! gota get this cargo to its destination");
+		double maxFlightTime = this.getRange() / this.getSpeed();
+		System.out.printf("%s : Max flight time %.2f hours \n", toString(), maxFlightTime);	
 	}
 
 	@Override
 	public String toString() {
-		return "CargoJet [" + super.toString() + "]";
+		return "CargoJet [" + super.toString() + " , weightOfCargo=" + loadWeight + "]";
 	}
 
 	@Override
 	public void loadCargo() {
-		// TODO Auto-generated method stub
-		System.out.println("Now loading Cargo for jet: " + this.toString());
-		System.out.println("Estimated time to completion: 0.0002 microseconds");
-		System.out.println("Cargo has been loaded");
-	
-		
+		System.out.println("Now loading cargo for: " + this.toString());
+		this.loadWeight += 2000;
+		System.out.println(this.loadWeight + " lb of cargo loaded");
 	}
 
 
